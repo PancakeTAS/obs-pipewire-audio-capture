@@ -352,8 +352,8 @@ bool obs_pw_audio_instance_init(struct obs_pw_audio_instance *pw, const struct p
 
 	pw->audio.output = stream_output;
 	pw->audio.stream =
-		pw_stream_new(pw->core, "OBS",
-					  pw_properties_new(PW_KEY_NODE_NAME, "OBS", PW_KEY_NODE_DESCRIPTION, obs_source_get_name(stream_output),
+		pw_stream_new(pw->core, obs_source_get_name(stream_output),
+					  pw_properties_new(PW_KEY_NODE_NAME, obs_source_get_name(stream_output), PW_KEY_NODE_DESCRIPTION, "OBS Studio",
 										PW_KEY_MEDIA_TYPE, "Audio", PW_KEY_MEDIA_CATEGORY, "Capture", PW_KEY_MEDIA_ROLE,
 										"Production", PW_KEY_NODE_WANT_DRIVER, stream_want_driver ? "true" : "false",
 										PW_KEY_STREAM_CAPTURE_SINK, stream_capture_sink ? "true" : "false", NULL));
