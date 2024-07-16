@@ -268,6 +268,8 @@ static const struct pw_stream_events stream_events = {
 int obs_pw_audio_stream_connect(struct obs_pw_audio_stream *s, uint32_t target_id, uint32_t target_serial,
 								uint32_t audio_channels)
 {
+	audio_channels = 2;
+
 	enum spa_audio_channel pos[8];
 	obs_channels_to_spa_audio_position(pos, audio_channels);
 
@@ -290,7 +292,7 @@ int obs_pw_audio_stream_connect(struct obs_pw_audio_stream *s, uint32_t target_i
 	pw_properties_free(stream_props);
 
 	return pw_stream_connect(s->stream, PW_DIRECTION_INPUT, target_id,
-							 PW_STREAM_FLAG_AUTOCONNECT | PW_STREAM_FLAG_MAP_BUFFERS | PW_STREAM_FLAG_DONT_RECONNECT,
+							 PW_STREAM_FLAG_MAP_BUFFERS | PW_STREAM_FLAG_DONT_RECONNECT,
 							 params, 1);
 }
 /* ------------------------------------------------- */
@@ -351,7 +353,7 @@ bool obs_pw_audio_instance_init(struct obs_pw_audio_instance *pw, const struct p
 	pw->audio.output = stream_output;
 	pw->audio.stream =
 		pw_stream_new(pw->core, "OBS",
-					  pw_properties_new(PW_KEY_NODE_NAME, "OBS", PW_KEY_NODE_DESCRIPTION, "OBS Audio Capture",
+					  pw_properties_new(PW_KEY_NODE_NAME, "OBS", PW_KEY_NODE_DESCRIPTION, obs_source_get_name(stream_output),
 										PW_KEY_MEDIA_TYPE, "Audio", PW_KEY_MEDIA_CATEGORY, "Capture", PW_KEY_MEDIA_ROLE,
 										"Production", PW_KEY_NODE_WANT_DRIVER, stream_want_driver ? "true" : "false",
 										PW_KEY_STREAM_CAPTURE_SINK, stream_capture_sink ? "true" : "false", NULL));
