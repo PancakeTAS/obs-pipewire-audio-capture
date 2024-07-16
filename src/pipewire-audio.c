@@ -269,6 +269,8 @@ int obs_pw_audio_stream_connect(struct obs_pw_audio_stream *s, uint32_t target_i
 								uint32_t audio_channels)
 {
 	audio_channels = 2;
+	if (!strcmp(obs_source_get_name(s->output), "Microphone Audio"))
+		audio_channels = 1;
 
 	enum spa_audio_channel pos[8];
 	obs_channels_to_spa_audio_position(pos, audio_channels);
